@@ -47,8 +47,22 @@ $show_complete_tasks = rand(0, 1);
     <table class="tasks">
         <?php foreach ($tasks as $key => $value) { 
             if ($value['completed'] && $show_complete_tasks === 0) {continue;}
+
+            $task_class = 'tasks__item task'; // Класс для строки задачи
+
+            if ($value['completed']) {
+                $task_class .= " task--completed";
+            }
+
+            if ($value['date']) {
+                $time_to_deadline = floor((strtotime($value['date']) - strtotime('now'))/3600);
+                if ($time_to_deadline <= 24) {
+                    $task_class .= " task--important";
+                }
+            }
+
             ?>
-            <tr class="tasks__item task <?php if ($value['completed']) {echo "task--completed";} ?>">
+            <tr class="<?=$task_class ?>">
                 <td class="task__select">
                     <label class="checkbox task__checkbox">
                         <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">

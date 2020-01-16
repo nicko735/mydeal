@@ -22,7 +22,7 @@ $tasks = [
     ],
     [
         'title' => 'Выполнить тестовое задание',
-        'date' => '25.12.2019',
+        'date' => '23.02.2020',
         'project' => $projects[2],
         'completed' => false
     ],
