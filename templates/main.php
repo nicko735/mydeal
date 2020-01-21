@@ -9,8 +9,8 @@ $show_complete_tasks = rand(0, 1);
         <ul class="main-navigation__list">
             <?php foreach($projects as $key => $value) { ?>
                 <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?=$value?></a>
-                    <span class="main-navigation__list-item-count"><?=count_tasks($tasks, $value) ?></span>
+                    <a class="main-navigation__list-item-link" href="#"><?=$value['project_name']?></a>
+                    <span class="main-navigation__list-item-count"><?=count_tasks($value['id'], $tasks_on_project) ?></span>
                 </li>
             <?php } ?>
         </ul>
@@ -46,16 +46,16 @@ $show_complete_tasks = rand(0, 1);
 
     <table class="tasks">
         <?php foreach ($tasks as $key => $value) { 
-            if ($value['completed'] && $show_complete_tasks === 0) {continue;}
+            if ($value['task_status'] && $show_complete_tasks === 0) {continue;}
 
             $task_class = 'tasks__item task'; // Класс для строки задачи
 
-            if ($value['completed']) {
+            if ($value['task_status']) {
                 $task_class .= " task--completed";
             }
 
-            if ($value['date']) {
-                $time_to_deadline = floor((strtotime($value['date']) - strtotime('now'))/3600);
+            if ($value['date_end']) {
+                $time_to_deadline = floor((strtotime($value['date_end']) - strtotime('now'))/3600);
                 if ($time_to_deadline <= 24) {
                     $task_class .= " task--important";
                 }
@@ -66,11 +66,11 @@ $show_complete_tasks = rand(0, 1);
                 <td class="task__select">
                     <label class="checkbox task__checkbox">
                         <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
-                        <span class="checkbox__text"><?=$value["title"] ?></span>
+                        <span class="checkbox__text"><?=$value["task_name"] ?></span>
                     </label>
                 </td>
 
-                <td class="task__date"><?=$value["date"] ?></td>
+                <td class="task__date"><?=$value["date_end"] ?></td>
             </tr>
         <?php } ?>
 

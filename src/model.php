@@ -1,11 +1,11 @@
 <?php
 //Функция подсчёта задач в проекте
-function count_tasks(array $array_of_tasks, $project_name) {
+function count_tasks($project_id, $tasks_on_project) {
     $number_of_tasks = 0;
 
-    foreach ($array_of_tasks as $key => $value) {
-        if ($value['project'] === $project_name) {
-            $number_of_tasks++;
+    foreach ($tasks_on_project as $key => $value) {
+        if ($value['project_id'] == $project_id) {
+            $number_of_tasks = $value['tasks_cnt'];
         }
     }
 
@@ -14,7 +14,7 @@ function count_tasks(array $array_of_tasks, $project_name) {
 
 
 //Функция для подключения шаблона
-function include_template($page_title, array $projects, array $tasks) {
+function include_template($page_title, array $projects, array $tasks, array $tasks_on_project) {
     $page_print = ''; //Переменная в которой будет сгенерированная страничка
 
 

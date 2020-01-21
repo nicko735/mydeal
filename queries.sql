@@ -61,8 +61,18 @@ UPDATE task SET task_status = 1 WHERE task.id = 6;
 UPDATE task SET task_name = 'Купить корм для кота и съесть его' WHERE task.id = 5;
 
 
+-- Добавление новых проектов и задач для пользователя для занятия 6
+INSERT INTO project (project_name, author_id) 
+	VALUES 
+    ('Планы на этот месяц', 5),
+    ('Планы на следующий месяц', 5);
 
-    
+INSERT INTO task (author_id, date_create, date_end, project_id, task_name, task_status) 
+	VALUES 
+    (5, '2020-01-21', '2020-01-31', 8, 'Уволиться', 0),
+    (5, '2020-01-21', '2020-02-01', 9, 'Начать стажировку', 0);
+
+
     
    
         
