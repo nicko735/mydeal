@@ -1,5 +1,10 @@
 <?php // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
+
+$params = $_GET;
+if(isset($params['project_id'])) {
+    $project_id = htmlspecialchars($params['project_id']);
+}
 ?>
 
 <section class="content__side">
@@ -8,8 +13,12 @@ $show_complete_tasks = rand(0, 1);
     <nav class="main-navigation">
         <ul class="main-navigation__list">
             <?php foreach($projects as $key => $value) { ?>
-                <li class="main-navigation__list-item">
-                    <a class="main-navigation__list-item-link" href="#"><?=$value['project_name']?></a>
+                <li class="main-navigation__list-item <?php
+                    if ($project_id === $value['id'] ) {
+                        print('main-navigation__list-item--active');
+                    }
+                ?>">
+                    <a class="main-navigation__list-item-link" href="<?='/?project_id=' . $value['id'] ?>"><?=$value['project_name']?></a>
                     <span class="main-navigation__list-item-count"><?=count_tasks($value['id'], $tasks_on_project) ?></span>
                 </li>
             <?php } ?>

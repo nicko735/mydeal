@@ -2,7 +2,7 @@
 //подключаем файл с конфигом
 include_once($_SERVER['DOCUMENT_ROOT'] . '/src/config.php'); 
 
-$user_id = 5;
+$user_id = 1;
 
 //Подключение к MySQL
 $link = mysqli_connect("localhost", "root", "", "mydeal");
@@ -22,11 +22,28 @@ WHERE users.id = '$user_id' OR users.id IS NULL";
 $result = mysqli_query($link, $sql);
 $projects_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$params = $_GET;
+// Если есть запрос с project_id то формируется список задач только для заданного проекта текущего пользователя
+if(isset($params['project_id'])) {
+    $project_id = htmlspecialchars($params['project_id']);
+
+    $sql = "SELECT * FROM task
+    WHERE author_id = '$user_id' and project_id = $project_id";
+    $result = mysqli_query($link, $sql);
+    $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if(empty($tasks_of_users)) {
+        header("HTTP/1.1 404 Not Found");
+        die;
+    }
+} 
+else {
 // Получить список из всех задач для текущего пользователя
 $sql = "SELECT * FROM task
 WHERE author_id = '$user_id'";
 $result = mysqli_query($link, $sql);
 $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
 
 // Запрос для подсчёта задач в проектах у пользователя
 $sql = "SELECT COUNT(id) tasks_cnt, project_id FROM task WHERE author_id = '$user_id' GROUP BY project_id";
