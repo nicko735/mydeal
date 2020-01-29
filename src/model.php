@@ -12,20 +12,69 @@ function count_tasks($project_id, $tasks_on_project) {
     return $number_of_tasks;
 }
 
+/**
+ * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
+ * @param string $name Путь к файлу шаблона относительно папки templates
+ * @param array $data Ассоциативный массив с данными для шаблона
+ * @return string Итоговый HTML
+ */
+function include_template($name, array $data = []) {
+    $name = 'templates/' . $name;
+    $result = '';
 
-//Функция для подключения шаблона
-function include_template($page_title, array $projects, array $tasks, array $tasks_on_project) {
-    $page_print = ''; //Переменная в которой будет сгенерированная страничка
+    if (!is_readable($name)) {
+        return $result;
+    }
 
+    ob_start();
+    extract($data);
+    require $name;
 
-    ob_start();     // Начинаем писать в буфер
-    include_once(PATH_TPL . '/main.php') ;      // В буфере получим разметку контента
-    $page_content = ob_get_clean();     // сохраняем результат и чистим буфер
+    $result = ob_get_clean();
 
-    ob_start();     // Начинаем писать в буфер
-    include_once(PATH_TPL . '/layout.php');      // В буфере получим разметку всей страницы, вставив в лейаут контент из прошлого действия
-    $page_print = ob_get_clean();     // сохраняем результат и чистим буфер
-
-    print($page_print);     // Отображаем страницу
+    return $result;
 }
+
+function get_post_val($name) {
+    return $_POST[$name] ?? "";
+}
+
+function validate_date($name) {
+    $test_date = $_POST[$name]; 
+
+    $test_arr = explode('-', $test_date); 
+    if (count($test_arr) == 3) {
+        if (checkdate($test_arr[1], $test_arr[2], $test_arr[0])) { 
+            $date = strtotime($test_date);
+            if ($date >= strtotime('today')) {
+                return null;
+            }
+            else {
+                return 'Дата должна быть больше или равной сегодняшней';
+            }
+        } 
+        else {
+            return 'Введена некорректная дата';
+        }
+    }
+    else {
+        if ($test_date == null) {
+            return null;
+        }
+        else {
+            return 'Введена некорректная дата';
+        }
+    }
+}
+
+function validate_projects($name, $id_list) {
+    $id = $_POST[$name];
+
+    if (!in_array($id, $id_list)) {
+        return 'Указан несуществующий проект';
+    }
+
+    return null;
+}
+
 ?>

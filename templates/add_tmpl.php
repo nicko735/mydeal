@@ -71,25 +71,37 @@
       <main class="content__main">
         <h2 class="content__main-heading">Добавление задачи</h2>
 
-        <form class="form"  action="index.html" method="post" autocomplete="off">
+        <form class="form"  action="add.php" method="post" autocomplete="off" enctype="multipart/form-data">
           <div class="form__row">
             <label class="form__label" for="name">Название <sup>*</sup></label>
-
-            <input class="form__input" type="text" name="name" id="name" value="" placeholder="Введите название">
+            <?php $classname = isset($errors['name']) ? "form__input--error" : ""; ?>
+            <input class="form__input <?= $classname ?>" type="text" name="name" id="name" value="<?= get_post_val('name') ?>" placeholder="Введите название">
+            <?php if (isset($errors['name'])) { ?>
+              <p class="form__message"><?=$errors['name'] ?></p>
+            <?php } ?>            
           </div>
 
           <div class="form__row">
             <label class="form__label" for="project">Проект <sup>*</sup></label>
-
-            <select class="form__input form__input--select" name="project" id="project">
-              <option value="">Входящие</option>
+            <?php $classname = isset($errors['project']) ? "form__input--error" : ""; ?>
+            <select class="form__input form__input--select <?= $classname ?>" name="project" id="project">
+              <?php foreach($projects_of_users as $key => $value) { ?>
+                <?php $selected = $value["id"] == get_post_val('project') ? "selected" : "";?>
+                <option value="<?=$value["id"]?>" <?= $selected ?>><?=$value["project_name"]?></option>
+              <?php } ?>
             </select>
+            <?php if (isset($errors['project'])) { ?>
+              <p class="form__message"><?=$errors['project'] ?></p>
+            <?php } ?>  
           </div>
 
           <div class="form__row">
             <label class="form__label" for="date">Дата выполнения</label>
-
-            <input class="form__input form__input--date" type="text" name="date" id="date" value="" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+            <?php $classname = isset($errors['date']) ? "form__input--error" : ""; ?>
+            <input class="form__input form__input--date <?= $classname ?>" type="text" name="date" id="date" value="<?= get_post_val('date') ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
+            <?php if (isset($errors['date'])) { ?>
+              <p class="form__message"><?=$errors['date'] ?></p>
+            <?php } ?>  
           </div>
 
           <div class="form__row">

@@ -1,6 +1,7 @@
 <?php // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
-
+// var_dump($data);
+// var_dump($projects_of_users);
 $params = $_GET;
 if(isset($params['project_id'])) {
     $project_id = htmlspecialchars($params['project_id']);
@@ -12,7 +13,7 @@ if(isset($params['project_id'])) {
 
     <nav class="main-navigation">
         <ul class="main-navigation__list">
-            <?php foreach($projects as $key => $value) { ?>
+            <?php foreach($projects_of_users as $key => $value) { ?>
                 <li class="main-navigation__list-item <?php
                     if ($project_id === $value['id'] ) {
                         print('main-navigation__list-item--active');
@@ -54,7 +55,7 @@ if(isset($params['project_id'])) {
     </div>
 
     <table class="tasks">
-        <?php foreach ($tasks as $key => $value) { 
+        <?php foreach ($tasks_of_users as $key => $value) { 
             if ($value['task_status'] && $show_complete_tasks === 0) {continue;}
 
             $task_class = 'tasks__item task'; // Класс для строки задачи
@@ -76,8 +77,17 @@ if(isset($params['project_id'])) {
                     <label class="checkbox task__checkbox">
                         <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
                         <span class="checkbox__text"><?=$value["task_name"] ?></span>
+                        
                     </label>
                 </td>
+
+                
+                <td class="task__file">
+                <?php if ($value["file"]) { ?>
+                <a class="download-link" href="<?=$value["file"] ?>"></a>
+                <?php } ?>
+                </td>
+                
 
                 <td class="task__date"><?=$value["date_end"] ?></td>
             </tr>
