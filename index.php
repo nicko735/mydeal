@@ -59,15 +59,12 @@ else {
     $result = mysqli_query($link, $sql);
     $username_array = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $data_layout['page_title'] = $username_array[0]['name'];
+
+    //Сборка и вызов страницы
+    // include_template($username, $projects_of_users, $tasks_of_users, $tasks_on_project);
+    $data_layout['page_content'] = include_template('main.php', $data_index);
+    $layout = include_template('layout.php', $data_layout);
+    print($layout);
+
 }
-
-
-
-//Сборка и вызов страницы
-// include_template($username, $projects_of_users, $tasks_of_users, $tasks_on_project);
-$data_layout['page_content'] = include_template('main.php', $data_index);
-$layout = include_template('layout.php', $data_layout);
-print($layout);
-
-
 ?>

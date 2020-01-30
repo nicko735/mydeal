@@ -25,7 +25,7 @@ $link = mysqli_connect("localhost", "root", "", "mydeal");
 if ($link == false){
     print("Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error());
     die;
-}
+} else {
 
 //Объявление кодировки
 mysqli_set_charset($link, "utf8");
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $sql = "INSERT INTO task (author_id, date_create, project_id, task_name, date_end, file) 
-        VALUES (" . $user_id . ", NOW(), " . $sql_project . ", " . "'" . $sql_name . "'" . ", " . "'" .  $sql_date . "'" .  ", " . "'" .  $sql_file . "'" .  ");";
+        VALUES (" . $user_id . ", NOW(), " . $sql_project . ", " . "'" . $sql_name . "'" . ", " . $sql_date . ", " . $sql_file . ");";
 
         $result = mysqli_query($link, $sql);
 
@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         print(mysqli_error($link));
+        // print ($sql);
 
         header("Location: /index.php");
         
@@ -129,5 +130,5 @@ else {
     print($add_page);
 }
 
-
+}
 ?>
