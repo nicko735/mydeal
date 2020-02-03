@@ -1,5 +1,10 @@
 <?php
-
+    if (!empty($page_title)) {
+        $is_anon = false;
+    }
+    else {
+        $is_anon = true;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -12,28 +17,12 @@
     <link rel="stylesheet" href="css/flatpickr.min.css">
 </head>
 
-<body>
+<body class="<?php $is_anon ? print('body-background') : print('') ; ?>">
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
-    <div class="container container--with-sidebar">
-        <header class="main-header">
-            <a href="/">
-                <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
-            </a>
-
-            <div class="main-header__side">
-                <a class="main-header__side-item button button--plus open-modal" href="/add.php">Добавить задачу</a>
-
-                <div class="main-header__side-item user-menu">
-                    <div class="user-menu__data">
-                        <p><?=$page_title?></p>
-
-                        <a href="#">Выйти</a>
-                    </div>
-                </div>
-            </div>
-        </header>
+    <div class="container <?php $is_anon ? print('') : print('container--with-sidebar') ; ?>">
+        <?php $is_anon ? require_once 'block/header_guest.php' : require_once 'block/header.php' ; ?>
 
         <div class="content">
             <?=$page_content ?>

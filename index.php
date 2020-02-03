@@ -55,10 +55,16 @@ else {
     $sql = "SELECT name FROM users WHERE id = '$user_id'";
     $result = mysqli_query($link, $sql);
     $username_array = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if(!empty($username_array)) {
+        $username_array = $username_array[0]['name'];
+    }
+    else {
+        $username_array = [];
+    }
 
     //Сборка и вызов страницы
     $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
-    $layout = include_template('layout.php', ['page_title' => $username_array[0]['name'], 'page_content' => $page_content]);
+    $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
     print($layout);
 
 }
