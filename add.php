@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_FILES['file']['name'] !== "") {
             move_uploaded_file($current_path, $new_path);
             $sql_file ='/' . $task['file'];
-            $sql_file = mysqli_real_escape_string($link, $sql_file);
+            $sql_file = "'" . mysqli_real_escape_string($link, $sql_file) . "'";
         } 
         else {
             $sql_file = 'NULL';
@@ -99,18 +99,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql_project = mysqli_real_escape_string($link, $sql_project);
         
         $sql_name = $task['name'];
-        $sql_name = mysqli_real_escape_string($link, $sql_name);
+        $sql_name = "'" .  mysqli_real_escape_string($link, $sql_name) . "'";
 
         if (!empty($task['date'])) {
             $sql_date = $task['date'];
-            $sql_date = mysqli_real_escape_string($link, $sql_date);
+            $sql_date = "'" . mysqli_real_escape_string($link, $sql_date) . "'";
         } 
         else {
             $sql_date = 'NULL';
         }
 
         $sql = "INSERT INTO task (author_id, date_create, project_id, task_name, date_end, file) 
-        VALUES (" . $user_id . ", NOW(), " . $sql_project . ", " . "'" . $sql_name . "'" . ", " . $sql_date . ", " . $sql_file . ");";
+        VALUES (" . $user_id . ", NOW(), " . $sql_project . ", " . $sql_name . ", " . $sql_date . ", " . $sql_file . ");";
 
         $result = mysqli_query($link, $sql);
 
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         print(mysqli_error($link));
-        // print ($sql);
+        //print ($sql);
 
         header("Location: /index.php");
         

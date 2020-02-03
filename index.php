@@ -21,7 +21,6 @@ else {
     WHERE users.id = '$user_id' OR users.id IS NULL";
     $result = mysqli_query($link, $sql);
     $projects_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    $data_index['projects_of_users'] = $projects_of_users;
 
     $params = $_GET;
     // Если есть запрос с project_id то формируется список задач только для заданного проекта текущего пользователя
@@ -45,25 +44,21 @@ else {
     $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
-    $data_index['tasks_of_users'] = $tasks_of_users;
 
 
     // Запрос для подсчёта задач в проектах у пользователя
     $sql = "SELECT COUNT(id) tasks_cnt, project_id FROM task WHERE author_id = '$user_id' GROUP BY project_id";
     $result = mysqli_query($link, $sql);
     $tasks_on_project = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    $data_index['tasks_on_project'] = $tasks_on_project;
 
     //Определение имени пользователя
     $sql = "SELECT name FROM users WHERE id = '$user_id'";
     $result = mysqli_query($link, $sql);
     $username_array = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    $data_layout['page_title'] = $username_array[0]['name'];
 
     //Сборка и вызов страницы
-    // include_template($username, $projects_of_users, $tasks_of_users, $tasks_on_project);
-    $data_layout['page_content'] = include_template('main.php', $data_index);
-    $layout = include_template('layout.php', $data_layout);
+    $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
+    $layout = include_template('layout.php', ['page_title' => $username_array[0]['name'], 'page_content' => $page_content]);
     print($layout);
 
 }
