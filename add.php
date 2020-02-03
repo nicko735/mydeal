@@ -3,22 +3,6 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . '/src/config.php'); 
 $user_id = 1;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $task = $_POST;
-    
-    $required = ['name', 'project'];
-    $errors = [];
-
-    $rules = [
-        'name' => function() {
-            return validate_task_name('name');
-        },
-        'project' => function() {
-            return validate_project('project');
-        }
-    ];
-}
-
 //Подключение к MySQL
 $link = mysqli_connect("localhost", "root", "", "mydeal");
 

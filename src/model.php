@@ -77,4 +77,25 @@ function validate_projects($name, $id_list) {
     return null;
 }
 
+function validate_email($name, $link) {
+    $email = $_POST[$name];
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $sql = "SELECT id FROM users
+        WHERE email = '$email'";
+        $result = mysqli_query($link, $sql);
+        $user_id_of_email = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        if (!empty($user_id_of_email)) {
+            return 'Данный email уже зарегистрирован';
+        }
+        else {
+            return null;
+        }        
+    }
+    else {
+        return 'E-mail введён некорректно';
+    }   
+}
+
 ?>
