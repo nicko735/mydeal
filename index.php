@@ -78,7 +78,7 @@ else {
         $page_content = include_template('guest.php', []);
     }
     
-    $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+    $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
     print($layout);
 
 }

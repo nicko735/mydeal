@@ -47,7 +47,7 @@ if ($link == false){
         // Если есть ошибки то отправим всё в шаблон и отобразим ошибки и набранные в прошлый раз поля
         if (count($errors)) {
             $page_content = include_template('auth_tmpl.php', ['auth' => $auth, 'errors' => $errors, 'login_error' => $login_error]);
-            $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+            $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
             print($layout);
         } 
         else {
@@ -90,7 +90,7 @@ if ($link == false){
                 $login_error = true;
 
                 $page_content = include_template('auth_tmpl.php', ['auth' => $auth, 'errors' => $errors, 'login_error' => $login_error]);
-                $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+                $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
                 print($layout);
             }
             else {
@@ -103,7 +103,7 @@ if ($link == false){
                     $login_error = true;
 
                     $page_content = include_template('auth_tmpl.php', ['auth' => $auth, 'errors' => $errors, 'login_error' => $login_error]);
-                    $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+                    $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
                     print($layout);
                 }
             }  
@@ -112,7 +112,7 @@ if ($link == false){
     }
     else {
         $page_content = include_template('auth_tmpl.php', ['login_error' => $login_error]);
-        $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+        $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
         print($layout);
     }
 

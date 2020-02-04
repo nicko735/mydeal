@@ -1,10 +1,29 @@
 <?php
     if (!empty($page_title)) {
         $is_anon = false;
+        $user_name = $page_title;
     }
     else {
         $is_anon = true;
+        $page_title ='';
     }
+
+    switch ($script_name) {
+        case 'index.php':
+            $page_title = $page_title . ' Главная';
+            break;
+        case 'add.php':
+            $page_title = $page_title . ' Добавление задачи';
+            break;
+        case 'auth.php':
+            $page_title = $page_title . ' Вход';
+            break;
+        case 'register.php':
+            $page_title = $page_title . ' Регистрация';
+            break;
+    }
+
+    $page_title .= ' "Дела в порядке"';
 ?>
 <!DOCTYPE html>
 <html lang="ru">

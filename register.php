@@ -46,7 +46,7 @@ if ($link == false){
         // Если есть ошибки то отправим всё в шаблон и отобразим ошибки и набранные в прошлый раз поля
         if (count($errors)) {
             $page_content = include_template('reg_tmpl.php', ['reg' => $reg, 'errors' => $errors]);
-            $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+            $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
             print($layout);
         } 
         else {
@@ -79,7 +79,7 @@ if ($link == false){
     }
     else {
         $page_content = include_template('reg_tmpl.php', []);
-        $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+        $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
         print($layout);
     }
 
