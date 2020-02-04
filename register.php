@@ -3,6 +3,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/src/config.php');
 
 //Подключение к MySQL
 $link = mysqli_connect("localhost", "root", "", "mydeal");
+$username_array = [];
 
 if ($link == false){
     print("Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error());
@@ -21,7 +22,7 @@ if ($link == false){
         // правила валидации
         $rules = [
             'email' => function() use ($link) {
-                return validate_email('email', $link);
+                return validate_email_reg('email', $link);
             }            
         ];
 
@@ -45,7 +46,8 @@ if ($link == false){
         // Если есть ошибки то отправим всё в шаблон и отобразим ошибки и набранные в прошлый раз поля
         if (count($errors)) {
             $page_content = include_template('reg_tmpl.php', ['reg' => $reg, 'errors' => $errors]);
-            print($page_content);
+            $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+            print($layout);
         } 
         else {
             // Если ошибок нет то сохраняем в БД
@@ -77,7 +79,8 @@ if ($link == false){
     }
     else {
         $page_content = include_template('reg_tmpl.php', []);
-            print($page_content);
+        $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
+        print($layout);
     }
 
 }

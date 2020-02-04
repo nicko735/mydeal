@@ -10,7 +10,7 @@
             <div class="user-menu__data">
                 <p><?=$page_title?></p>
 
-                <a href="#">Выйти</a>
+                <a href="/logout.php">Выйти</a>
             </div>
         </div>
     </div>

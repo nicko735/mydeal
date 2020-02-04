@@ -2,7 +2,15 @@
 //подключаем файл с конфигом
 include_once($_SERVER['DOCUMENT_ROOT'] . '/src/config.php'); 
 
-$user_id = 1;
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+}
+else {
+    $user_id = 0;
+}
+
 
 //Подключение к MySQL
 $link = mysqli_connect("localhost", "root", "", "mydeal");
@@ -63,7 +71,13 @@ else {
     }
 
     //Сборка и вызов страницы
-    $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
+    if(!empty($username_array)) {
+        $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
+    }
+    else {
+        $page_content = include_template('guest.php', []);
+    }
+    
     $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content]);
     print($layout);
 

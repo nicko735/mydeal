@@ -1,7 +1,15 @@
 <?php 
 //подключаем файл с конфигом
 include_once($_SERVER['DOCUMENT_ROOT'] . '/src/config.php'); 
-$user_id = 1;
+
+session_start();
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+}
+else {
+    $user_id = 0;
+}
 
 //Подключение к MySQL
 $link = mysqli_connect("localhost", "root", "", "mydeal");
