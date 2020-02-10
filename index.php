@@ -70,12 +70,35 @@ else {
         $username_array = [];
     }
 
-    //Сборка и вызов страницы
-    if(!empty($username_array)) {
-        $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
-    }
-    else {
-        $page_content = include_template('guest.php', []);
+    if(!empty($params['search'])) {
+        $search = htmlspecialchars($_GET['search']);
+        $search = trim($search);
+
+        $sql = "SELECT * FROM task
+        WHERE author_id = '$user_id' and MATCH (task_name) AGAINST (" . "'" . $search . "*'" . "IN BOOLEAN MODE)";
+
+        $result = mysqli_query($link, $sql);
+        $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+        // if (empty($tasks_of_users)) {
+            
+        // }
+
+        //Сборка и вызов страницы
+        if(!empty($username_array)) {
+            $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project, 'search' => $search]);
+        }
+        else {
+            $page_content = include_template('guest.php', []);
+        }
+    } else {
+        //Сборка и вызов страницы
+        if(!empty($username_array)) {
+            $page_content = include_template('main.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
+        }
+        else {
+            $page_content = include_template('guest.php', []);
+        }
     }
     
     $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);

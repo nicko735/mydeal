@@ -46,3 +46,7 @@ CREATE INDEX date_end_index ON task(date_end);
 CREATE INDEX task_author_id_index ON task(author_id);
 CREATE INDEX task_project_id_index ON task(project_id);
 
+CREATE FULLTEXT INDEX search_task_name ON task(task_name);
+
+-- SELECT * FROM task WHERE MATCH (task_name) AGAINST ('зада*' IN BOOLEAN MODE)
+

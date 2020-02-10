@@ -1,5 +1,6 @@
 <?php // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
+// $search = htmlspecialchars($_GET['search']);
 ?>
 
 <?php require_once 'block/sidebar_menu.php'; ?>
@@ -7,8 +8,8 @@ $show_complete_tasks = rand(0, 1);
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
-    <form class="search-form" action="index.php" method="post" autocomplete="off">
-        <input class="search-form__input" type="text" name="" value="" placeholder="Поиск по задачам">
+    <form class="search-form" action="index.php" method="get" autocomplete="off">
+        <input class="search-form__input" type="text" name="search" value="<?php if (isset($search)) {echo $search;}?>" placeholder="Поиск по задачам">
 
         <input class="search-form__submit" type="submit" name="" value="Искать">
     </form>
@@ -65,7 +66,10 @@ $show_complete_tasks = rand(0, 1);
 
                 <td class="task__date"><?=$value["date_end"] ?></td>
             </tr>
-        <?php } ?>
+        <?php }
+        if (empty($tasks_of_users)) {
+            print('Ничего не найдено по вашему запросу');
+        } ?>
 
     </table>
 </main>
