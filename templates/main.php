@@ -1,6 +1,13 @@
 <?php // показывать или нет выполненные задачи
 //$show_complete_tasks = rand(0, 1);
 $show_complete_tasks = 1;
+
+$params = $_GET;
+if(isset($params['date_filter'])) {
+    $date_filter = htmlspecialchars($params['date_filter']);
+} else {
+    $date_filter = "";
+}
 ?>
 
 <?php require_once 'block/sidebar_menu.php'; ?>
@@ -16,10 +23,10 @@ $show_complete_tasks = 1;
 
     <div class="tasks-controls">
         <nav class="tasks-switch">
-            <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-            <a href="<?= '/?date_filter=today' ?>" class="tasks-switch__item">Повестка дня</a>
-            <a href="<?= '/?date_filter=tomorrow' ?>" class="tasks-switch__item">Завтра</a>
-            <a href="<?= '/?date_filter=overdue' ?>" class="tasks-switch__item">Просроченные</a>
+            <a href="/" class="tasks-switch__item <?php if ($date_filter === '') {echo 'tasks-switch__item--active';}?>">Все задачи</a>
+            <a href="<?= '/?date_filter=today' ?>" class="tasks-switch__item <?php if ($date_filter === 'today') {echo 'tasks-switch__item--active';}?>">Повестка дня</a>
+            <a href="<?= '/?date_filter=tomorrow' ?>" class="tasks-switch__item <?php if ($date_filter === 'tomorrow') {echo 'tasks-switch__item--active';}?>">Завтра</a>
+            <a href="<?= '/?date_filter=overdue' ?>" class="tasks-switch__item <?php if ($date_filter === 'overdue') {echo 'tasks-switch__item--active';}?>">Просроченные</a>
         </nav>
 
         <label class="checkbox">
@@ -30,32 +37,23 @@ $show_complete_tasks = 1;
     </div>
 
     <table class="tasks">
-        <?php 
+        <?php         
+        foreach ($tasks_of_users as $key => $value) { 
+        if ($value['task_status'] && $show_complete_tasks === 0) {continue;}
 
-            // $params = $_GET;
-            // // Если есть запрос с project_id то формируется список задач только для заданного проекта текущего пользователя
-            // if(isset($params['date_filter'])) {
-            //     $date_filter = htmlspecialchars($params['date_filter']);
-                
-            // } 
-        
-            foreach ($tasks_of_users as $key => $value) { 
-            if ($value['task_status'] && $show_complete_tasks === 0) {continue;}
+        $task_class = 'tasks__item task'; // Класс для строки задачи
 
-            $task_class = 'tasks__item task'; // Класс для строки задачи
+        if ($value['task_status']) {
+            $task_class .= " task--completed";
+        }
 
-            if ($value['task_status']) {
-                $task_class .= " task--completed";
+        if ($value['date_end']) {
+            $time_to_deadline = floor((strtotime($value['date_end']) - strtotime('now'))/3600);
+            if ($time_to_deadline <= 24) {
+                $task_class .= " task--important";
             }
-
-            if ($value['date_end']) {
-                $time_to_deadline = floor((strtotime($value['date_end']) - strtotime('now'))/3600);
-                if ($time_to_deadline <= 24) {
-                    $task_class .= " task--important";
-                }
-            }
-
-            ?>
+        }
+        ?>
             <tr class="<?=$task_class ?>">
                 <td class="task__select">
                     <label class="checkbox task__checkbox">
