@@ -21,6 +21,9 @@
         case 'register.php':
             $page_title = $page_title . ' Регистрация';
             break;
+        case 'add_proj.php':
+            $page_title = $page_title . ' Добавление проекта';
+            break;
     }
 
     $page_title .= ' "Дела в порядке"';

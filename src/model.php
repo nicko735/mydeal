@@ -77,6 +77,18 @@ function validate_projects($name, $id_list) {
     return null;
 }
 
+function validate_projects_create($name, $project_list) {
+    $new_project = $_POST[$name];
+    $new_project = mb_strtolower($new_project);
+    foreach($project_list as $key => $project) {
+        if ($new_project == mb_strtolower($project['project_name'])) {
+            return 'Такой проект уже существует';
+        }
+    }
+
+    return null;
+}
+
 function validate_email_reg($name, $link) {
     $email = $_POST[$name];
     $email = mysqli_real_escape_string($link, $email);
