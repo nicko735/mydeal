@@ -1,6 +1,6 @@
 <?php // показывать или нет выполненные задачи
-$show_complete_tasks = rand(0, 1);
-// $search = htmlspecialchars($_GET['search']);
+//$show_complete_tasks = rand(0, 1);
+$show_complete_tasks = 1;
 ?>
 
 <?php require_once 'block/sidebar_menu.php'; ?>
@@ -17,20 +17,29 @@ $show_complete_tasks = rand(0, 1);
     <div class="tasks-controls">
         <nav class="tasks-switch">
             <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-            <a href="/" class="tasks-switch__item">Повестка дня</a>
-            <a href="/" class="tasks-switch__item">Завтра</a>
-            <a href="/" class="tasks-switch__item">Просроченные</a>
+            <a href="<?= '/?date_filter=today' ?>" class="tasks-switch__item">Повестка дня</a>
+            <a href="<?= '/?date_filter=tomorrow' ?>" class="tasks-switch__item">Завтра</a>
+            <a href="<?= '/?date_filter=overdue' ?>" class="tasks-switch__item">Просроченные</a>
         </nav>
 
         <label class="checkbox">
             <!--добавить сюда атрибут "checked", если переменная $show_complete_tasks равна единице-->
-            <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks === 1) {echo 'checked';}?>>
+            <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php //if ($show_complete_tasks === 1) {echo 'checked';}?>>
             <span class="checkbox__text">Показывать выполненные</span>
         </label>
     </div>
 
     <table class="tasks">
-        <?php foreach ($tasks_of_users as $key => $value) { 
+        <?php 
+
+            // $params = $_GET;
+            // // Если есть запрос с project_id то формируется список задач только для заданного проекта текущего пользователя
+            // if(isset($params['date_filter'])) {
+            //     $date_filter = htmlspecialchars($params['date_filter']);
+                
+            // } 
+        
+            foreach ($tasks_of_users as $key => $value) { 
             if ($value['task_status'] && $show_complete_tasks === 0) {continue;}
 
             $task_class = 'tasks__item task'; // Класс для строки задачи
@@ -50,7 +59,7 @@ $show_complete_tasks = rand(0, 1);
             <tr class="<?=$task_class ?>">
                 <td class="task__select">
                     <label class="checkbox task__checkbox">
-                        <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+                        <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1" <?php if ($value['task_status'] === '1') {echo 'checked';}?>>
                         <span class="checkbox__text"><?=$value["task_name"] ?></span>
                         
                     </label>

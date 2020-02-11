@@ -45,11 +45,33 @@ else {
         }
     } 
     else {
-    // Получить список из всех задач для текущего пользователя
-    $sql = "SELECT * FROM task
-    WHERE author_id = '$user_id'";
-    $result = mysqli_query($link, $sql);
-    $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        // Если есть запрос с date_filter то формируется список задач только для текущего значения фильтра
+        if(isset($params['date_filter'])) {
+            $date_filter = htmlspecialchars($params['date_filter']);
+
+            switch ($date_filter) {
+                case 'today':
+                    $date_filter = " AND date_end = CURDATE()";
+                    break;
+                case 'tomorrow':
+                    $date_filter = " AND date_end = (CURDATE() + INTERVAL 1 DAY)";
+                    break;
+                case 'overdue':
+                    $date_filter = " AND date_end < CURDATE()";
+                    break;
+                default:
+                    $date_filter = "";
+                    break;
+                }
+        } else {
+            $date_filter = "";
+        }
+        // Получить список из всех задач для текущего пользователя в зависимости от фильтра
+        $sql = "SELECT * FROM task
+        WHERE author_id = '$user_id'" . $date_filter;
+        $result = mysqli_query($link, $sql);
+        $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
     }
 
 
