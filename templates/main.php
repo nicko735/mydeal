@@ -1,17 +1,51 @@
-<?php // показывать или нет выполненные задачи
-//$show_complete_tasks = rand(0, 1);
-$show_complete_tasks = 1;
-
+<?php
 $params = $_GET;
 if(isset($params['date_filter'])) {
     $date_filter = htmlspecialchars($params['date_filter']);
 } else {
     $date_filter = "";
 }
+
+if(isset($params['show_completed'])) {
+    $show_completed = htmlspecialchars($params['show_completed']);
+} else {
+    $show_completed = "0";
+}
 ?>
 
 <?php require_once 'block/sidebar_menu.php'; ?>
 
+<!-- Если кликнуть по чекбоксу задачи, то переход на скрипт смены статуса задачи с заданными гет параметрами -->
+<script>
+    function get_link(id_task) {
+        if (document.getElementById(id_task).checked) {
+            document.getElementById(id_task).checked = false;
+        }
+        else {
+            document.getElementById(id_task).checked = true;
+        } 
+        document.location.href = "/task_complete.php?task_id=" + id_task;
+    }
+</script>
+
+<!-- Показывать выполненные или нет -->
+<script>
+    function get_link() {
+        if (document.getElementById(checkbox_show).checked) {
+            //document.getElementById(checkbox_show).checked = false;
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set('show_completed', 1);
+            window.location = '/index.php?' + searchParams.toString();
+        }
+        else {
+            // document.getElementById(checkbox_show).checked = true;
+            var searchParams = new URLSearchParams(window.location.search);
+            searchParams.set('show_completed', 0);
+            window.location = '/index.php?' + searchParams.toString();
+        } 
+        document.location.href = "/task_complete.php?task_id=" + id_task;
+    }
+</script>
 <main class="content__main">
     <h2 class="content__main-heading">Список задач</h2>
 
@@ -30,8 +64,7 @@ if(isset($params['date_filter'])) {
         </nav>
 
         <label class="checkbox">
-            <!--добавить сюда атрибут "checked", если переменная $show_complete_tasks равна единице-->
-            <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php //if ($show_complete_tasks === 1) {echo 'checked';}?>>
+            <input class="checkbox__input visually-hidden show_completed" type="checkbox" id="checkbox_show" <?php if ($show_completed === "1") {echo 'checked';}?> onclick='get_link();'>
             <span class="checkbox__text">Показывать выполненные</span>
         </label>
     </div>
@@ -39,7 +72,8 @@ if(isset($params['date_filter'])) {
     <table class="tasks">
         <?php         
         foreach ($tasks_of_users as $key => $value) { 
-        if ($value['task_status'] && $show_complete_tasks === 0) {continue;}
+        $id = $value['id'];
+        if ($value['task_status'] && $show_completed === "0") {continue;}
 
         $task_class = 'tasks__item task'; // Класс для строки задачи
 
@@ -56,11 +90,13 @@ if(isset($params['date_filter'])) {
         ?>
             <tr class="<?=$task_class ?>">
                 <td class="task__select">
-                    <label class="checkbox task__checkbox">
-                        <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1" <?php if ($value['task_status'] === '1') {echo 'checked';}?>>
-                        <span class="checkbox__text"><?=$value["task_name"] ?></span>
-                        
-                    </label>
+                    
+                        <label class="checkbox task__checkbox">
+                            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" id="<?= $id ?>" value="1" <?php if ($value['task_status'] === '1') {echo 'checked';}?> onclick='get_link("<?= $id ?>");'>
+                            <span class="checkbox__text"><a class="check_link" href='/task_complete.php?task_id=<?= $id ?>'><?=$value["task_name"] ?></a></span>
+                            
+                        </label>
+                    
                 </td>
 
                 

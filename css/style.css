@@ -478,6 +478,7 @@ a:focus {
 .checkbox__input:checked + .checkbox__text:hover::before,
 .checkbox__input:checked + .checkbox__text:focus::before {
   border: 1px solid #6e45e2;
+  cursor: pointer;
 }
 
 .radio-button__input:focus + .radio-button__text,
@@ -770,4 +771,9 @@ a:focus {
 
 .welcome__text p {
   margin: 20px 0;
+}
+
+.check_link:hover , .check_link {
+  color: inherit;
+  text-decoration: inherit;
 }

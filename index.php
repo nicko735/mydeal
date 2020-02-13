@@ -74,8 +74,6 @@ else {
 
     }
 
-
-
     // Запрос для подсчёта задач в проектах у пользователя
     $sql = "SELECT COUNT(id) tasks_cnt, project_id FROM task WHERE author_id = '$user_id' GROUP BY project_id";
     $result = mysqli_query($link, $sql);
