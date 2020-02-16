@@ -1,0 +1,14 @@
+{
+    "name": "tom/mydeal",
+    "description": "php",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Pavel",
+            "email": "pawelrm1@yandex.ru"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}

@@ -67,6 +67,7 @@ if ($link == false){
             VALUES ( NOW(), '$sql_email', '$sql_password', '$sql_name');";
 
             $result = mysqli_query($link, $sql);
+            
 
             if ($result == false) {
                 print("Произошла ошибка при выполнении запроса");
