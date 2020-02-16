@@ -26,15 +26,18 @@ if (isset($_SESSION['user_id'])) {
             $task_status = mysqli_fetch_all($result, MYSQLI_ASSOC);
             //Если задача не найдена то на главную, найдена - продолжаем
             if(empty($task_status)) {
+                mysqli_close ($link);
                 header("Location: /index.php");
             } else {
                 //Если у задачи статус "0" то меняем его на "1" и наоборот, после чего редирект
                 if ($task_status[0]["task_status"] === "0") {
                     $sql = "UPDATE task SET task_status = '1' WHERE author_id = '$user_id' and id = $task_id";
                     $result = mysqli_query($link, $sql);
+                    mysqli_close ($link);
                 } else {
                     $sql = "UPDATE task SET task_status = '0' WHERE author_id = '$user_id' and id = $task_id";
                     $result = mysqli_query($link, $sql);
+                    mysqli_close ($link);
                 }
             }
             // Если переход был осуществлён с како-то страницы, то переход назад на неё

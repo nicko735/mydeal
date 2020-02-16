@@ -40,6 +40,7 @@ else {
         $result = mysqli_query($link, $sql);
         $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
         if(empty($tasks_of_users)) {
+            mysqli_close ($link);
             header("HTTP/1.1 404 Not Found");
             die;
         }
@@ -100,9 +101,7 @@ else {
         $result = mysqli_query($link, $sql);
         $tasks_of_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-        // if (empty($tasks_of_users)) {
-            
-        // }
+        mysqli_close ($link);
 
         //Сборка и вызов страницы
         if(!empty($username_array)) {

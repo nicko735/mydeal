@@ -45,6 +45,7 @@ if ($link == false){
 
         // Если есть ошибки то отправим всё в шаблон и отобразим ошибки и набранные в прошлый раз поля
         if (count($errors)) {
+            mysqli_close ($link);
             $page_content = include_template('reg_tmpl.php', ['reg' => $reg, 'errors' => $errors]);
             $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
             print($layout);
@@ -67,11 +68,13 @@ if ($link == false){
             VALUES ( NOW(), '$sql_email', '$sql_password', '$sql_name');";
 
             $result = mysqli_query($link, $sql);
-            
+            $result_error = mysqli_error($link);
+
+            mysqli_close ($link);
 
             if ($result == false) {
                 print("Произошла ошибка при выполнении запроса");
-                print(mysqli_error($link));
+                print($result_error);
             } else {
                 header("Location: /index.php");
             } 
@@ -79,6 +82,7 @@ if ($link == false){
         }
     }
     else {
+        mysqli_close ($link);
         $page_content = include_template('reg_tmpl.php', []);
         $layout = include_template('layout.php', ['page_title' => $username_array, 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
         print($layout);

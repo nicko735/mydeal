@@ -79,6 +79,7 @@ if ($link == false){
 
         // Если есть ошибки то отправим всё в шаблон и отобразим ошибки и набранные в прошлый раз поля
         if (count($errors)) {
+            mysqli_close ($link);
             $page_content = include_template('add_proj_tmpl.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project,  'proj' => $proj, 'errors' => $errors]);
             $layout = include_template('layout.php', ['page_title' => $username_array[0]['name'], 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
             print($layout);
@@ -104,6 +105,7 @@ if ($link == false){
         }
     }
     else {
+        mysqli_close ($link);
         $page_content = include_template('add_proj_tmpl.php', ['projects_of_users' => $projects_of_users, 'tasks_of_users' => $tasks_of_users, 'tasks_on_project' => $tasks_on_project]);
         $layout = include_template('layout.php', ['page_title' => $username_array[0]['name'], 'page_content' => $page_content, 'script_name' => basename(__FILE__)]);
         print($layout);
